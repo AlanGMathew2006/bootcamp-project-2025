@@ -1,6 +1,6 @@
 import React from "react";
 import { notFound } from "next/navigation";
-import blogs from "../../../data/blogData";
+import { getBlogBySlug, getBlogs } from "@/database/blogSchema";
 import styles from "./page.module.css";
 import Button from "@/components/ui/Button";
 
@@ -10,8 +10,8 @@ interface BlogPostProps {
   };
 }
 
-export default function BlogPost({ params }: BlogPostProps) {
-  const blog = blogs.find((b) => b.slug === params.slug);
+export default async function BlogPost({ params }: BlogPostProps) {
+  const blog = await getBlogBySlug(params.slug);
 
   if (!blog) {
     notFound();
@@ -44,14 +44,15 @@ export default function BlogPost({ params }: BlogPostProps) {
 
 // Generate static params for all blog posts
 export async function generateStaticParams() {
+  const blogs = await getBlogs();
+  if (!blogs) return [];
+
   return blogs.map((blog) => ({
     slug: blog.slug,
   }));
-}
-
-// Generate metadata for each blog post
+} // Generate metadata for each blog post
 export async function generateMetadata({ params }: BlogPostProps) {
-  const blog = blogs.find((b) => b.slug === params.slug);
+  const blog = await getBlogBySlug(params.slug);
 
   if (!blog) {
     return {
