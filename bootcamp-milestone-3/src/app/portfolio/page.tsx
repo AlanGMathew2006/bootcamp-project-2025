@@ -1,15 +1,27 @@
 import React from "react";
 import styles from "./page.module.css";
-import projects from "../../data/projectData";
+import { getProjects } from "@/database/projectSchema";
 import Button from "@/components/ui/Button";
 
-export default function Portfolio() {
+export default async function Portfolio() {
+  // Fetch projects from database
+  const projects = await getProjects();
+
+  // Handle null case if no projects found
+  if (!projects) {
+    return (
+      <div className={styles.portfolioContainer}>
+        <h1>My Projects</h1>
+        <p>No projects found at the moment. Check back soon!</p>
+      </div>
+    );
+  }
   return (
     <div className={styles.portfolioContainer}>
       <h1>My Projects</h1>
       <div className={styles.projectsGrid}>
-        {projects.map((project) => (
-          <div key={project.slug} className={styles.projectCard}>
+        {projects.map((project, index) => (
+          <div key={index} className={styles.projectCard}>
             <img
               src={project.image}
               alt={project.imageAlt}
