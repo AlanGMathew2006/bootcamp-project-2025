@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug, getBlogs } from "@/database/blogSchema";
 import styles from "./page.module.css";
 import Button from "@/components/ui/Button";
+import Comment from "@/components/ui/Comment";
 
 interface BlogPostProps {
   params: {
@@ -32,6 +33,15 @@ export default async function BlogPost({ params }: BlogPostProps) {
 
         <div className={styles.blogContent}>
           <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+        </div>
+
+        {/* Comments Section */}
+        <div>
+          {/* ... other blog content */}
+          {blog.comments &&
+            blog.comments.map((comment, index) => (
+              <Comment key={index} comment={comment} />
+            ))}
         </div>
 
         <footer className={styles.blogFooter}>
