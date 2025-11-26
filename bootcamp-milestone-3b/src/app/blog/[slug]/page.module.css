@@ -1,8 +1,47 @@
 .blogPostContainer {
-  max-width: 800px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
   min-height: 100vh;
+}
+
+/* Two Column Layout */
+.twoColumnLayout {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Left Column - Comments */
+.leftColumn {
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+/* Right Column - Blog Content */
+.rightColumn {
+  min-width: 0; /* Prevent overflow in flex/grid */
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .twoColumnLayout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .leftColumn {
+    position: static;
+    max-height: none;
+    order: 2; /* Comments go after blog content on mobile */
+  }
+
+  .rightColumn {
+    order: 1; /* Blog content goes first on mobile */
+  }
 }
 
 .blogPost {

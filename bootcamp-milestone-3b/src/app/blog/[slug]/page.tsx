@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug, getBlogs } from "@/database/blogSchema";
 import styles from "./page.module.css";
 import Button from "@/components/ui/Button";
-import Comment from "@/components/ui/Comment";
+import CommentSection from "@/components/ui/CommentSection";
 
 interface BlogPostProps {
   params: {
@@ -20,34 +20,36 @@ export default async function BlogPost({ params }: BlogPostProps) {
 
   return (
     <div className={styles.blogPostContainer}>
-      <article className={styles.blogPost}>
-        <header className={styles.blogHeader}>
-          <h1 className={styles.blogTitle}>{blog.title}</h1>
-          <p className={styles.blogDate}>{blog.date}</p>
-          <img
-            src={blog.image}
-            alt={blog.imageAlt}
-            className={styles.blogHeroImage}
-          />
-        </header>
-
-        <div className={styles.blogContent}>
-          <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+      {/* Two Column Layout */}
+      <div className={styles.twoColumnLayout}>
+        {/* Left Column - Comments Section */}
+        <div className={styles.leftColumn}>
+          <CommentSection comments={blog.comments} blogSlug={blog.slug} />
         </div>
 
-        {/* Comments Section */}
-        <div>
-          {/* ... other blog content */}
-          {blog.comments &&
-            blog.comments.map((comment, index) => (
-              <Comment key={index} comment={comment} />
-            ))}
-        </div>
+        {/* Right Column - Blog Content */}
+        <div className={styles.rightColumn}>
+          <article className={styles.blogPost}>
+            <header className={styles.blogHeader}>
+              <h1 className={styles.blogTitle}>{blog.title}</h1>
+              <p className={styles.blogDate}>{blog.date}</p>
+              <img
+                src={blog.image}
+                alt={blog.imageAlt}
+                className={styles.blogHeroImage}
+              />
+            </header>
 
-        <footer className={styles.blogFooter}>
-          <Button href="/blog">← Back to Blog</Button>
-        </footer>
-      </article>
+            <div className={styles.blogContent}>
+              <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+            </div>
+
+            <footer className={styles.blogFooter}>
+              <Button href="/blog">← Back to Blog</Button>
+            </footer>
+          </article>
+        </div>
+      </div>
     </div>
   );
 }
