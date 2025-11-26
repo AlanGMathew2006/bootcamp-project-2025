@@ -4,15 +4,10 @@ import React, { useState } from "react";
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
 import styles from "./CommentSection.module.css";
-
-type IComment = {
-  user: string;
-  comment: string;
-  time: Date | string;
-};
+import { Comment as CommentType } from "@/database/commentSchema";
 
 interface CommentSectionProps {
-  comments?: IComment[];
+  comments?: CommentType[];
   blogSlug: string;
 }
 
@@ -21,17 +16,18 @@ export default function CommentSection({
   blogSlug,
 }: CommentSectionProps) {
   // Initialize local state with the comments from props
-  const [localComments, setLocalComments] = useState<IComment[]>(comments);
+  const [localComments, setLocalComments] = useState<CommentType[]>(comments);
 
   const handleCommentAdded = (newComment: {
     user: string;
     comment: string;
   }) => {
     // Add the new comment to local state immediately
-    const comment: IComment = {
+    const comment: CommentType = {
       user: newComment.user,
       comment: newComment.comment,
-      time: new Date().toISOString(),
+      time: new Date().toISOString(), // Convert to string for serialization
+      blogSlug: blogSlug,
     };
 
     setLocalComments((prev) => [...prev, comment]);

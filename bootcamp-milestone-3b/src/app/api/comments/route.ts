@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import connectDB from "@/database/db";
-import Blog from "@/database/blogSchema";
+import { addComment } from "@/database/commentSchema";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,35 +12,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await connectDB();
+    // Add new comment using the Comment schema
+    const savedComment = await addComment({
+      user: user,
+      comment: comment,
+      blogSlug: slug,
+    });
 
-    // Add new comment to the blog post
-    const updatedBlog = await Blog.findOneAndUpdate(
-      { slug: slug },
-      {
-        $push: {
-          comments: {
-            user: user,
-            comment: comment,
-            time: new Date()
-          }
-        }
-      },
-      { new: true }
-    );
-
-    if (!updatedBlog) {
+    if (!savedComment) {
       return NextResponse.json(
-        { error: "Blog post not found" },
-        { status: 404 }
+        { error: "Failed to save comment" },
+        { status: 500 }
       );
     }
 
     return NextResponse.json(
-      { message: "Comment added successfully" },
+      {
+        message: "Comment added successfully",
+        comment: savedComment,
+      },
       { status: 201 }
     );
-
   } catch (error) {
     console.error("Error adding comment:", error);
     return NextResponse.json(

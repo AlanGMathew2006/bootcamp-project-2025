@@ -1,9 +1,14 @@
 import React from "react";
 import { notFound } from "next/navigation";
 import { getBlogBySlug, getBlogs } from "@/database/blogSchema";
+import { getCommentsByBlogSlug } from "@/database/commentSchema";
 import styles from "./page.module.css";
 import Button from "@/components/ui/Button";
 import CommentSection from "@/components/ui/CommentSection";
+
+// Force dynamic rendering to always fetch fresh data including comments
+export const dynamic = "force-dynamic";
+export const revalidate = 0; // Always revalidate
 
 interface BlogPostProps {
   params: {
@@ -18,13 +23,16 @@ export default async function BlogPost({ params }: BlogPostProps) {
     notFound();
   }
 
+  // Fetch comments from separate Comment collection
+  const comments = await getCommentsByBlogSlug(blog.slug);
+
   return (
     <div className={styles.blogPostContainer}>
       {/* Two Column Layout */}
       <div className={styles.twoColumnLayout}>
         {/* Left Column - Comments Section */}
         <div className={styles.leftColumn}>
-          <CommentSection comments={blog.comments} blogSlug={blog.slug} />
+          <CommentSection comments={comments || []} blogSlug={blog.slug} />
         </div>
 
         {/* Right Column - Blog Content */}

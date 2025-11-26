@@ -1,13 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import connectDB from "./db";
 
-// Comment type definition
-type IComment = {
-  user: string;
-  comment: string;
-  time: Date;
-};
-
 export type Blog = {
   title: string;
   slug: string;
@@ -16,7 +9,6 @@ export type Blog = {
   content: string;
   image: string;
   imageAlt: string;
-  comments?: IComment[];
 };
 
 // mongoose schema
@@ -28,17 +20,6 @@ const blogSchema = new Schema<Blog>({
   content: { type: String, required: true },
   image: { type: String, required: true },
   imageAlt: { type: String, required: true },
-  comments: {
-    type: [
-      {
-        user: { type: String, required: true },
-        comment: { type: String, required: true },
-        time: { type: Date, required: true },
-      },
-    ],
-    required: false,
-    default: [],
-  },
 });
 
 //defining the collection and model

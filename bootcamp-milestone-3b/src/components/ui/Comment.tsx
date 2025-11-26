@@ -1,13 +1,8 @@
 import styles from "./Comment.module.css";
-
-type IComment = {
-  user: string;
-  comment: string;
-  time: Date | string;
-};
+import { Comment as CommentType } from "@/database/commentSchema";
 
 type CommentProps = {
-  comment: IComment;
+  comment: CommentType;
 };
 
 function parseCommentTime(time: Date | string) {
