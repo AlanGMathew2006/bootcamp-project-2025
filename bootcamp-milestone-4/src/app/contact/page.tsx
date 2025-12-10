@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./page.module.css";
+import ContactForm from "./ContactForm";
 
 export default function Contact() {
   return (
@@ -9,62 +10,7 @@ export default function Contact() {
       </div>
 
       <div className={styles.contactContent}>
-        <div className={styles.contactForm}>
-          <h2>Send Me a Message</h2>
-          <form className={styles.form}>
-            <div className={styles.formGroup}>
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                required
-                className={styles.formInput}
-                placeholder="Your full name"
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                className={styles.formInput}
-                placeholder="your.email@example.com"
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="subject">Subject</label>
-              <input
-                type="text"
-                id="subject"
-                name="subject"
-                required
-                className={styles.formInput}
-                placeholder="What's this about?"
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="message">Message</label>
-              <textarea
-                id="message"
-                name="message"
-                required
-                rows={6}
-                className={styles.formTextarea}
-                placeholder="Tell me about your project or just say hello..."
-              />
-            </div>
-
-            <button type="submit" className={styles.submitButton}>
-              Send Message
-            </button>
-          </form>
-        </div>
+        <ContactForm />
 
         <div className={styles.contactInfo}>
           <h2>Get In Touch</h2>
